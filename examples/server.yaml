@@ -1,0 +1,33 @@
+# Where the server listens for control connections from clients.
+# Clients dial this exactly once per session; users never connect here.
+listen: 0.0.0.0:5679
+
+tls:
+  # Self-signed is expected; clients pin by SHA-256 fingerprint.
+  cert: /etc/passage/server.crt
+  key:  /etc/passage/server.key
+
+# One entry per registered client. Hybrid Ed25519 + ML-DSA-65 auth
+# is mandatory: every client must have both `pubkey` and `pq_pubkey`
+# set. Either field may be a list to allow multiple valid keys
+# during a rotation.
+clients:
+  - id: dirac-prod
+    pubkey: ed25519:REPLACE_WITH_PUBLIC_KEY_BASE64
+    pq_pubkey: mldsa:REPLACE_WITH_ML_DSA_PUBLIC_KEY_BASE64
+    services:
+      # Each service publishes the named tunnel on a port reachable by
+      # end users. allowed_user_cidrs is optional; when present it
+      # restricts which source IPs may connect.
+      - name: dirac_ssh
+        listen: 0.0.0.0:3022
+        allowed_user_cidrs: [10.0.0.0/8]
+      - name: postgres_med
+        listen: 127.0.0.1:6000
+        allowed_user_cidrs: [127.0.0.1/32]
+
+limits:
+  max_streams_per_client: 256
+  handshake_timeout: 10s
+  idle_timeout: 5m
+  heartbeat_interval: 30s

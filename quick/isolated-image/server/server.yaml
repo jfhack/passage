@@ -1,0 +1,19 @@
+listen: 0.0.0.0:5679
+
+tls:
+  cert: /etc/passage/server.crt
+  key:  /etc/passage/server.key
+
+clients:
+  - id: REPLACE_ME_CLIENT_ID
+    pubkey: ed25519:REPLACE_ME_CLIENT_PUBKEY
+    pq_pubkey: mldsa:REPLACE_ME_CLIENT_PQ_PUBKEY
+    services:
+      - name: web
+        listen: 0.0.0.0:8080
+
+limits:
+  max_streams_per_client: 64
+  handshake_timeout: 10s
+  idle_timeout: 5m
+  heartbeat_interval: 30s

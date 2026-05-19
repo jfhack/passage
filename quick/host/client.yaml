@@ -1,0 +1,17 @@
+remote: 127.0.0.1:5679
+
+server_fingerprint: sha256:REPLACE_ME_RUN_BOOTSTRAP
+
+identity:
+  id: demo
+  privkey_file: /etc/passage/client.ed25519
+  pq_privkey_file: /etc/passage/client.mldsa
+
+services:
+  # Forward to the host's SSH daemon.
+  ssh: 127.0.0.1:22
+
+reconnect:
+  initial_backoff: 1s
+  max_backoff: 10s
+  jitter: true

@@ -1,0 +1,24 @@
+services:
+  passage:
+    image: ghcr.io/jfhack/passage:latest
+    container_name: passage-client
+    restart: unless-stopped
+    networks: [public, internal]
+    volumes:
+      - ./keys/client.ed25519:/etc/passage/client.ed25519:ro
+      - ./keys/client.mldsa:/etc/passage/client.mldsa:ro
+      - ./client.yaml:/etc/passage/client.yaml:ro
+    command: ["client", "-config", "/etc/passage/client.yaml"]
+
+  backend:
+    image: nginx:alpine
+    container_name: passage-backend
+    restart: unless-stopped
+    networks: [internal]
+
+networks:
+  public:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true

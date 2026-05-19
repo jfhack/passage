@@ -1,0 +1,11 @@
+/dist/
+/deploy/
+*.tar.gz
+*.ed25519
+*.crt
+*.key
+*.pem
+/quick/*/keys/
+.idea/
+.vscode/
+

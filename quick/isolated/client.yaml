@@ -1,0 +1,20 @@
+remote: passage-server:5679
+
+# Replaced by ./bootstrap.sh on first run with the cert's actual
+# fingerprint.
+server_fingerprint: sha256:REPLACE_ME_RUN_BOOTSTRAP
+
+identity:
+  id: demo
+  privkey_file: /etc/passage/client.ed25519
+  pq_privkey_file: /etc/passage/client.mldsa
+
+services:
+  # Forward incoming "web" streams to the in-network nginx demo
+  # backend container.
+  web: passage-backend:80
+
+reconnect:
+  initial_backoff: 1s
+  max_backoff: 10s
+  jitter: true

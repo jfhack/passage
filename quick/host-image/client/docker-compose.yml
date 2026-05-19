@@ -1,0 +1,11 @@
+services:
+  passage:
+    image: ghcr.io/jfhack/passage:latest
+    container_name: passage-client
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - ./keys/client.ed25519:/etc/passage/client.ed25519:ro
+      - ./keys/client.mldsa:/etc/passage/client.mldsa:ro
+      - ./client.yaml:/etc/passage/client.yaml:ro
+    command: ["client", "-config", "/etc/passage/client.yaml"]

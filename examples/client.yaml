@@ -1,0 +1,23 @@
+# Public address of the passage server.
+remote: example.com:5679
+
+# Pin the server's leaf cert by SHA-256 fingerprint. Get this with:
+#   passage fingerprint /etc/passage/server.crt
+server_fingerprint: sha256:REPLACE_WITH_SHA256_HEX
+
+identity:
+  id: dirac-prod
+  # Both keys are required (hybrid Ed25519 + ML-DSA-65 client auth).
+  privkey_file: /etc/passage/client.ed25519
+  pq_privkey_file: /etc/passage/client.mldsa
+
+# Map of service name -> local backend address. Service names must be
+# a subset of the allowlist this client_id has on the server side.
+services:
+  dirac_ssh:    192.168.2.34:22
+  postgres_med: 192.168.2.41:5432
+
+reconnect:
+  initial_backoff: 1s
+  max_backoff: 60s
+  jitter: true

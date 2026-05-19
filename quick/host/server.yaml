@@ -1,0 +1,22 @@
+listen: 127.0.0.1:5679
+
+tls:
+  cert: /etc/passage/server.crt
+  key:  /etc/passage/server.key
+
+clients:
+  - id: demo
+    pubkey: ed25519:REPLACE_ME_RUN_BOOTSTRAP
+    pq_pubkey: mldsa:REPLACE_ME_RUN_BOOTSTRAP
+    services:
+      - name: ssh
+        # Demonstrates exposing the host's local SSH on a different
+        # port. Change to anything your host actually runs.
+        listen: 127.0.0.1:3022
+        allowed_user_cidrs: [127.0.0.1/32]
+
+limits:
+  max_streams_per_client: 64
+  handshake_timeout: 10s
+  idle_timeout: 5m
+  heartbeat_interval: 30s

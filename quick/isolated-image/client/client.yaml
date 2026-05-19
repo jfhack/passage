@@ -1,0 +1,16 @@
+remote: REPLACE_ME_REMOTE
+
+server_fingerprint: sha256:REPLACE_ME_FINGERPRINT
+
+identity:
+  id: REPLACE_ME_CLIENT_ID
+  privkey_file: /etc/passage/client.ed25519
+  pq_privkey_file: /etc/passage/client.mldsa
+
+services:
+  web: passage-backend:80
+
+reconnect:
+  initial_backoff: 1s
+  max_backoff: 60s
+  jitter: true

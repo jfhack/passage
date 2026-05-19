@@ -1,0 +1,40 @@
+# Example input for generating a paired server/client Docker Compose setup.
+# The generator should create two output directories, `server` and `client`,
+# and place the generated credentials in the matching directory.
+
+server:
+  # Address the server binds to for client control connections.
+  listen: 0.0.0.0:4790
+
+  # Public host:port that clients use to reach the server.
+  address: example.com:4790
+
+  # Can be "host" or "isolated".
+  mode: host
+
+client:
+  identity:
+    # Client id registered on the server. Generated keys belong to this id.
+    id: demo
+
+  # Can be "host" or "isolated".
+  mode: host
+
+# Base name for generated Docker Compose projects and container names. The
+# generator appends the role, producing projects/containers such as
+# `demo-passage-server` and `demo-passage-client`.
+project_name: demo
+
+# Service names are shared by both sides. For each service, `client` is the
+# backend reached from the client container, and `server` is the address exposed
+# by the server container for users to connect to.
+services:
+  service1:
+    client: 127.0.0.1:8080
+    server: 0.0.0.0:8181
+  service2:
+    client: 192.168.1.43:3306
+    server: 0.0.0.0:3306
+  service3:
+    client: 192.168.1.44:5432
+    server: 172.17.0.3:5432

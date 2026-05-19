@@ -1,0 +1,13 @@
+services:
+  passage:
+    image: ghcr.io/jfhack/passage:latest
+    container_name: passage-server
+    restart: unless-stopped
+    ports:
+      - "5679:5679"
+      - "8080:8080"
+    volumes:
+      - ./keys/server.crt:/etc/passage/server.crt:ro
+      - ./keys/server.key:/etc/passage/server.key:ro
+      - ./server.yaml:/etc/passage/server.yaml:ro
+    command: ["server", "-config", "/etc/passage/server.yaml"]

@@ -1,0 +1,48 @@
+services:
+  server:
+    build:
+      context: ../..
+    container_name: passage-server
+    user: "65532:65532"
+    networks: [public, internal]
+    ports:
+      - "8080:8080"   # tunneled nginx (end users hit this)
+      - "5679:5679"   # control port (clients hit this)
+    volumes:
+      - ./keys/server.crt:/etc/passage/server.crt:ro
+      - ./keys/server.key:/etc/passage/server.key:ro
+      - ./server.yaml:/etc/passage/server.yaml:ro
+    command: ["server", "-config", "/etc/passage/server.yaml"]
+
+  client:
+    build:
+      context: ../..
+    container_name: passage-client
+    depends_on:
+      server:
+        condition: service_started
+    user: "65532:65532"
+    networks: [internal]
+    volumes:
+      - ./keys/client.ed25519:/etc/passage/client.ed25519:ro
+      - ./keys/client.mldsa:/etc/passage/client.mldsa:ro
+      - ./client.yaml:/etc/passage/client.yaml:ro
+    command: ["client", "-config", "/etc/passage/client.yaml"]
+
+  backend:
+    # Demo origin server reachable only on the internal network; the
+    # passage client forwards traffic into it.
+    image: nginx:alpine
+    container_name: passage-backend
+    networks: [internal]
+
+networks:
+  # 'public' is a normal bridge with outbound internet. Only the
+  # server attaches to it so end users can reach the published port.
+  public:
+    driver: bridge
+  # 'internal' has internet=false. The passage client and the demo
+  # backend live here and cannot reach anything outside.
+  internal:
+    driver: bridge
+    internal: true
