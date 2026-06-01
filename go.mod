@@ -1,6 +1,8 @@
 module github.com/jfhack/passage
 
-go 1.25
+go 1.25.0
+
+toolchain go1.26.3
 
 require (
 	github.com/hashicorp/yamux v0.1.2
@@ -9,5 +11,5 @@ require (
 
 require (
 	github.com/cloudflare/circl v1.6.3
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
 )
